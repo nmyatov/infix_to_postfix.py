@@ -9,13 +9,18 @@ def inf_to_post(expression):
         '-' : 2,
         '(' : 1
     }
-
     stack = Stack() # стек куда складываем наши операторы
     tokens_output = "" # вывод
+    prev_token = ''
+    for token in expression:
+        if token == ' ':
+            continue
 
-    for token in expression.split(): # тут разделяем по пробелам
-        if token.isalpha() or token.isdigit(): # если токен - операнд, сразу кладем в вывод
-            tokens_output += f'{token} '
+        elif token.isalpha() or token.isdigit(): # если токен - операнд, сразу кладем в вывод
+            if prev_token.isdigit() or prev_token.isalpha():
+                tokens_output += f'{token} '
+            else:
+                tokens_output += f'{token}'
 
         elif token == '(':
             stack.push(token)
@@ -33,7 +38,7 @@ def inf_to_post(expression):
                     stack.push(token)
                 except KeyError:
                     return 'Неправильный ввод'
-
+        prev_token = token
 
     while not stack.isEmpty():
         tokens_output += f'{stack.pop()} '
