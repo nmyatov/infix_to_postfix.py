@@ -1,26 +1,26 @@
 from stack import Stack
 
+
 def inf_to_post(expression):
     operators = {
-        ')' : 3,
         '*' : 3,
         '/' : 3,
         '+' : 2,
         '-' : 2,
         '(' : 1
     }
-    stack = Stack() # стек куда складываем наши операторы
-    tokens_output = "" # вывод
+    stack = Stack()  # stack with operators
+    tokens_output = ""  # output
     prev_token = ''
     for token in expression:
-        if token == ' ':
+        if token == ' ':  # skip backspaces
             continue
 
-        elif token.isalpha() or token.isdigit(): # если токен - операнд, сразу кладем в вывод
-            if prev_token.isdigit() or prev_token.isalpha():
+        elif token.isalpha() or token.isdigit():  # if token is a operand, we put it in output
+            if prev_token.isdigit() or prev_token.isalpha():  # check ambiguity and more
                 tokens_output += f'{token} '
             else:
-                tokens_output += f'{token}'
+                tokens_output += f' {token}'
 
         elif token == '(':
             stack.push(token)
@@ -32,30 +32,31 @@ def inf_to_post(expression):
                 top_token = stack.pop()
 
         else:
-                try:
-                    while not stack.isEmpty() and operators[stack.peek()] >= operators[token]:
-                        tokens_output += f'{stack.pop()} '
-                    stack.push(token)
-                except KeyError:
-                    return 'Неправильный ввод'
+            try:
+                while (not stack.isEmpty()) and (operators[stack.peek()] >= operators[token]):
+                    tokens_output += f'{stack.pop()} '
+                stack.push(token)
+            except KeyError:
+                return 'Error with input'
+
         prev_token = token
 
     while not stack.isEmpty():
         tokens_output += f'{stack.pop()} '
 
-    return tokens_output
+    return tokens_output.strip()
+
 
 if __name__ == '__main__':
-    # пример ввода ( A + B ) * C
+    # example input ( A + B ) * C or (a+b)*c
     while True:
-      out = input(
-                    'Алгоритм перевода из инфиксной нотации в постфиксную, используя стэк на основе связаных списков\n'
-                    'Каждый символ вводите через пробел. Пример ( А + B ) * C\n'
-                    'Доступные операции: +, -, /, *\n'
-                    'Операнды - любые буквы или цифры\n'
-                    'Для завершения программы нажмите ENTER\n'
-                )
-      if out:
-          print(inf_to_post(out))
-      else:
-          break
+        out = input(
+            'Algorithm converting from infix to postfix notation using a stack based on linked list\n'
+            'You can input in different ways.\nFor example: ( А + B ) * C or (a+b)*c\n'
+            'Available operations: +, -, /, *\n'
+            'Press ENTER to end the program\n'
+        )
+        if out:
+            print(inf_to_post(out))
+        else:
+            break
