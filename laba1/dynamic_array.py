@@ -14,7 +14,7 @@ class DynamicArray:
 
     def __getitem__(self, item): # Return the element at position k
         if  not 0 <= item < self.elements:
-            return 'Ошибка индексов'
+            return 'Index error'
         return self.dynamic_array[item]
 
     def append(self, elem): # Add the element at the end of the array
@@ -47,7 +47,7 @@ class DynamicArray:
 
     def insertAt(self, index, data):
         if not  0 <= index <= self.elements:
-            return 'Ошибка индексов'
+            return 'Index error'
         if index == self.elements:
             self.dynamic_array = self._resize(self.capacity + 1)
             self.capacity += 1
@@ -58,7 +58,7 @@ class DynamicArray:
 
     def print_array(self) -> str: # print array
         if self.elements == 0:
-            return 'Пустой массив'
+            return 'Empty arr'
         our_print = ""
         for elem in self.dynamic_array:
             our_print += f"{elem} "
